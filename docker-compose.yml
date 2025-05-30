@@ -1,0 +1,33 @@
+#version: "3.7"
+services:
+
+  mysql-db:
+    image: mysql:5.7
+    container_name: mysql-container
+    restart: always
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: Root_123
+      MYSQL_DATABASE: myforeignjob_dbs
+      MYSQL_USER: demo
+      MYSQL_PASSWORD: cK649m##Q
+
+  fast-api:
+    container_name: fast-api-container
+    build: .
+    restart: always
+    depends_on:
+      - mysql-db
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/myforeignjob
+      - ./static/country_flag_image:/myforeignjob/static/country_flag_image
+      - ./static/country_image:/myforeignjob/static/country_image
+
+volumes:
+  mysql-data:
